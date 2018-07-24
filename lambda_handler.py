@@ -7,16 +7,6 @@ import time
 import datetime
 
 def lambda_handler(event, context):
-    wikipedia = "https://en.wikipedia.org/w/api.php?action=featuredfeed&feed=onthisday&feedformat=atom"
-    print(urllib2.urlopen(wikipedia).read())
-    root = ET.fromstring( urllib2.urlopen(wikipedia).read() )
-    print( root.tag )
-    
-    for child in root:
-        print( child.tag, child.attribute )
-    
-    return 0
-    #test = newdata[     
     
     #Python zero pads days, need to remove for days 1-9 of month
     day = time.strftime("%B")+"%20"+time.strftime("%d").lstrip("0").replace("%200", "%20")
