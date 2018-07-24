@@ -6,6 +6,8 @@ import xml.etree.ElementTree as ET
 import time
 import datetime
 
+testing = True;
+
 def lambda_handler(event, context):
     
     #Python zero pads days, need to remove for days 1-9 of month
@@ -30,7 +32,11 @@ def lambda_handler(event, context):
              "titleText": "On This Day, "+time.strftime("%B")+" "+time.strftime("%d"),
              "mainText": stripped,
              "redirectionUrl": "https://en.wikipedia.org/wiki/Special:FeedItem/onthisday/"+redirecturldate+"/" }
-    return feed
+    if testing:
+        print(feed)
+        return 0;
+    else:
+        return feed
     
 class MLStripper(HTMLParser):
     def __init__(self):
@@ -46,4 +52,6 @@ def strip_tags(html):
     s.feed(html)
     return s.get_data()
 
-lambda_handler("1","2")
+if testing:
+    lambda_handler("1","2")
+ 
