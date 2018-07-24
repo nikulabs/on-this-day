@@ -9,22 +9,19 @@ import datetime
 testing = True;
 
 def lambda_handler(event, context):
+
+    wikipedia = "https://en.wikipedia.org/w/api.php?action=featuredfeed&feed=onthisday&feedformat=atom"
+    root = ET.fromstring( urllib2.urlopen(wikipedia).read() )
+
+    #Most current date is last in list
+    #Body is second to last
+    stripped = strip_tags(root[-1][-2].text)
     
     #Python zero pads days, need to remove for days 1-9 of month
     day = time.strftime("%B")+"%20"+time.strftime("%d").lstrip("0").replace("%200", "%20")
     redirecturldate = time.strftime("%Y")+time.strftime("%m")+time.strftime("%d")+"000000"
     updateDate = datetime.datetime.now().isoformat()
     
-    yahoo = "https://query.yahooapis.com/v1/public/yql"
-    select = "?q=select%20description%20from%20rss%20where%20url%3D"
-    wikipedia = "'http%3A%2F%2Fen.wikipedia.org%2Fw%2Fapi.php%3Faction%3Dfeaturedfeed%26feed%3Donthisday%26feedformat%3Drss'"
-    tables = "%20%20and%20title%3D'On%20this%20day%3A%20" + day +"'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"
-
-    url = yahoo+select+wikipedia+tables
-    rssdata = json.load(urllib2.urlopen(url))
-    description = rssdata['query']['results']['item']['description']
-    stripped = strip_tags(description)
-
     if "More anniversaries" in stripped:
         stripped, trailer = stripped.split("More anniversaries",1)
     feed = { "uid": "urn:uuid:1335c695-cfb8-4ebb-abbd-80da344efa6b",
