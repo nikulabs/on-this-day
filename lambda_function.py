@@ -43,11 +43,10 @@ def remove_people_dates(event_list):
     return event_list
 
 def filter_to_read_words(event_list):
-#TODO Implement
+    replace_words = ['(pictured),']
+    for i, e in enumerate(event_list):
+        event_list[i] = ' '.join([w for w in e.split() if w.lower() not in replace_words])
     return event_list
-    replace_words = ['(pictured)']
-    for event in event_list:
-        print(([word for word in event.split() if word.lower() not in replace_words]))
 
 def build_json(on_this_day):
     return { "uid": "urn:uuid:1335c695-cfb8-4ebb-abbd-80da344efa6b",
@@ -68,4 +67,4 @@ def get_url_date():
     return time.strftime("%B_")+time.strftime("%d").lstrip("0")
 
 if testing:
-    print get_on_this_day()
+    print(get_on_this_day())
