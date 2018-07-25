@@ -51,9 +51,8 @@ def filter_to_read_words(event_list):
         print(([word for word in event.split() if word.lower() not in replace_words]))
 
 def build_json(on_this_day):
-    update_date = get_update_date()
     return { "uid": "urn:uuid:1335c695-cfb8-4ebb-abbd-80da344efa6b",
-             "updateDate": update_date,
+             "updateDate": get_update_date(),
              "titleText": "On This Day, "+time.strftime("%B")+" "+time.strftime("%d"),
              "mainText": "".join(on_this_day),
              "redirectionUrl": "https://en.wikipedia.org/wiki/"+get_url_title()
