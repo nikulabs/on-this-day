@@ -3,7 +3,7 @@ import urllib2
 import json
 import time
 
-testing = True
+testing = False
 
 def lambda_handler(event, context):
     return get_on_this_day()
@@ -67,5 +67,5 @@ def get_url_title():
 def get_url_date():
     return time.strftime("%B_")+time.strftime("%d").lstrip("0")
 
-if True:
+if testing:
     print get_on_this_day()
