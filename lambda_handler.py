@@ -53,16 +53,15 @@ def filter_to_read_words(event_list):
 def build_json(on_this_day):
     return { "uid": "urn:uuid:1335c695-cfb8-4ebb-abbd-80da344efa6b",
              "updateDate": get_update_date(),
-             "titleText": "On This Day, "+time.strftime("%B")+" "+time.strftime("%d"),
+             "titleText": "On This Day, "+time.strftime("%B %d"),
              "mainText": "".join(on_this_day),
              "redirectionUrl": "https://en.wikipedia.org/wiki/"+get_url_title()
            }
 
 def get_update_date():
     #Python zero pads days, need to remove for days 1-9 of month
-    day = time.strftime("%B")+"%20"+time.strftime("%d").lstrip("0").replace("%200", "%20")
-    update_date = datetime.datetime.now().isoformat()
-    return update_date
+    today = datetime.datetime.now()
+    return today.strftime('%Y-%m-%dT')+"00:00:00.0Z"
 
 def get_url_title():
     return "Wikipedia:Selected_anniversaries/"+get_url_date()
