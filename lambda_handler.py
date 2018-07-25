@@ -28,10 +28,6 @@ def process_text( unicode_data ):
     event_list = filter_to_read_words(event_list)
     return event_list
 
-def filter_by_year(seq):
-    for line in seq:
-        if line and line[0].isdigit(): yield line
-
 def filter_to_read_words(event_list):
 #TODO Implement
     return event_list
