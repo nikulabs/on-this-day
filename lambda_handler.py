@@ -51,7 +51,7 @@ def filter_to_read_words(event_list):
         print(([word for word in event.split() if word.lower() not in replace_words]))
 
 def build_json(on_this_day):
-    redirect_url_date, update_date = get_dates()
+    update_date = get_update_date()
     return { "uid": "urn:uuid:1335c695-cfb8-4ebb-abbd-80da344efa6b",
              "updateDate": update_date,
              "titleText": "On This Day, "+time.strftime("%B")+" "+time.strftime("%d"),
@@ -59,12 +59,11 @@ def build_json(on_this_day):
              "redirectionUrl": "https://en.wikipedia.org/wiki/"+get_url_title()
            }
 
-def get_dates():
+def get_update_date():
     #Python zero pads days, need to remove for days 1-9 of month
     day = time.strftime("%B")+"%20"+time.strftime("%d").lstrip("0").replace("%200", "%20")
-    redirect_url_date = time.strftime("%Y")+time.strftime("%m")+time.strftime("%d")+"000000"
     update_date = datetime.datetime.now().isoformat()
-    return [redirect_url_date, update_date]
+    return update_date
 
 def get_url_title():
     return "Wikipedia:Selected_anniversaries/"+get_url_date()
