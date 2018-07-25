@@ -14,24 +14,19 @@ def get_on_this_day():
     wiki_data = get_wiki_data()
     on_this_day = process_text( wiki_data )
     feed = build_json( on_this_day )
-
-    if testing:
-        print(feed)
     return feed
 
 def get_wiki_data():
-    wikipedia = "https://en.wikipedia.org/w/api.php?action=featuredfeed&feed=onthisday&feedformat=atom"
-    root = ET.fromstring( urllib2.urlopen(wikipedia).read() )
-
-    #Most current date is last in list
-    #Body is second to last
-    return root[-2][-2].text
+    extract_command = "format=json&action=query&prop=extracts&exintro=True&explaintext="
+    wikipedia = "https://en.wikipedia.org/w/api.php?"+extract_command+get_url_title()
+    wiki_data = json.load(urllib2.urlopen(wikipedia))
+    return wiki_data["query"]["pages"].values()[0]["extract"]
 
 def process_text( unicode_data ):
-    data = strip_tags(unicode_data)
-    data_list = data.splitlines()
-    event_list = list(filter_by_year(data_list))
-    event_list = [" In " + s for s in event_list]
+    data_list = unicode_data.splitlines()
+    data_list.pop(0) #Remove date
+    data_list = filter(len, data_list)
+    event_list = [" In " + s for s in data_list]
     event_list = filter_to_read_words(event_list)
     return event_list
 
@@ -75,5 +70,11 @@ def get_dates():
     update_date = datetime.datetime.now().isoformat()
     return [redirect_url_date, update_date]
 
+def get_url_title():
+    return "&titles=Wikipedia:Selected_anniversaries/"+get_url_date()
+
+def get_url_date():
+    return time.strftime("%B_")+time.strftime("%d").lstrip("0")
+
 if True:
-    get_on_this_day()
+    print get_on_this_day()
