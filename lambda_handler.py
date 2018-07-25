@@ -22,10 +22,20 @@ def get_wiki_data():
 
 def process_text( unicode_data ):
     data_list = unicode_data.splitlines()
-    data_list.pop(0) #Remove date
-    data_list = filter(len, data_list)
-    event_list = [" In " + s for s in data_list]
+    event_list = filter(filter_to_events, data_list)
+
+    event_list = remove_people_dates(event_list)
     event_list = filter_to_read_words(event_list)
+
+    event_list = [" In " + s for s in event_list]
+    return event_list
+
+def filter_to_events(line):
+    if line and line[0].isdigit():
+        return True
+
+def remove_people_dates(event_list):
+    #TODO Implement
     return event_list
 
 def filter_to_read_words(event_list):
