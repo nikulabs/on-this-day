@@ -2,7 +2,6 @@
 import urllib2
 import json
 import time
-import datetime
 
 testing = True
 
@@ -60,8 +59,7 @@ def build_json(on_this_day):
 
 def get_update_date():
     #Python zero pads days, need to remove for days 1-9 of month
-    today = datetime.datetime.now()
-    return today.strftime('%Y-%m-%dT')+"00:00:00.0Z"
+    return time.strftime('%Y-%m-%dT')+"00:00:00.0Z"
 
 def get_url_title():
     return "Wikipedia:Selected_anniversaries/"+get_url_date()
