@@ -43,9 +43,8 @@ def remove_people_dates(event_list):
     return event_list
 
 def filter_to_read_words(event_list):
-    replace_words = ['(pictured),']
-    for i, e in enumerate(event_list):
-        event_list[i] = ' '.join([w for w in e.split() if w.lower() not in replace_words])
+    #TODO: Implement
+    replace_words = ['(pictured)']
     return event_list
 
 def build_json(on_this_day):
@@ -57,7 +56,6 @@ def build_json(on_this_day):
            }
 
 def get_update_date():
-    #Python zero pads days, need to remove for days 1-9 of month
     return time.strftime('%Y-%m-%dT')+"00:00:00.0Z"
 
 def get_url_title():
