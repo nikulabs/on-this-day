@@ -5,6 +5,7 @@ import json
 import xml.etree.ElementTree as ET
 import time
 import datetime
+import unicodedata
 
 testing = True
 
@@ -28,13 +29,14 @@ def get_wiki_data():
 
     #Most current date is last in list
     #Body is second to last
-    return root[-1][-2].text
+    return root[-2][-2].text
 
-def process_text( wiki_data ):
-    wiki_data = strip_tags(wiki_data)
-    wiki_data = remove_anniversaries(wiki_data)
-    wiki_data = remove_birth_death_dates(wiki_data)
-    return wiki_data
+def process_text( unicode_data ):
+    wiki_data = strip_tags(unicode_data)
+
+    wiki_list = wiki_data.splitlines()
+    event_list = list(filter_by_year(wiki_list))
+    return event_list
 
 class MyHTMLParser(HTMLParser):
     def __init__(self):
@@ -50,23 +52,17 @@ def strip_tags(html):
     s.feed(html)
     return s.get_data()
 
-def remove_anniversaries(text):
-    if "More anniversaries" in text:
-        stripped, trailer = text.split("More anniversaries",1)
-    return stripped
-
-def remove_birth_death_dates(stripped_text):
-#TODO Implement
-    return stripped_text
+def filter_by_year(seq):
+    for line in seq:
+        if line and line[0].isdigit(): yield line
 
 def build_json(on_this_day):
-    return on_this_day
-    redirect_url_date, updateDate = get_dates()
+    redirect_url_date, update_date = get_dates()
     return { "uid": "urn:uuid:1335c695-cfb8-4ebb-abbd-80da344efa6b",
-             "updateDate": updateDate,
+             "updateDate": update_date,
              "titleText": "On This Day, "+time.strftime("%B")+" "+time.strftime("%d"),
-             "mainText": on_this_day,
-             "redirectionUrl": "https://en.wikipedia.org/wiki/Special:FeedItem/onthisday/"+redirecturldate+"/" }
+             "mainText": "".join(on_this_day),
+             "redirectionUrl": "https://en.wikipedia.org/wiki/Special:FeedItem/onthisday/"+redirect_url_date+"/" }
 
 def get_dates():
     #Python zero pads days, need to remove for days 1-9 of month
