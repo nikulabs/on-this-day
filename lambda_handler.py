@@ -1,7 +1,5 @@
-from HTMLParser import HTMLParser
 import urllib2
 import json
-import xml.etree.ElementTree as ET
 import time
 import datetime
 
@@ -29,20 +27,6 @@ def process_text( unicode_data ):
     event_list = [" In " + s for s in data_list]
     event_list = filter_to_read_words(event_list)
     return event_list
-
-class MyHTMLParser(HTMLParser):
-    def __init__(self):
-        self.reset()
-        self.fed = []
-    def handle_data(self, d):
-        self.fed.append(d)
-    def get_data(self):
-        return ''.join(self.fed)
-
-def strip_tags(html):
-    s = MyHTMLParser()
-    s.feed(html)
-    return s.get_data()
 
 def filter_by_year(seq):
     for line in seq:
