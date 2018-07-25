@@ -5,23 +5,20 @@ import json
 import xml.etree.ElementTree as ET
 import time
 import datetime
-import unicodedata
 
 testing = True
 
 def lambda_handler(event, context):
-    print_on_this_day()
+    return get_on_this_day()
 
-def print_on_this_day():
+def get_on_this_day():
     wiki_data = get_wiki_data()
     on_this_day = process_text( wiki_data )
     feed = build_json( on_this_day )
 
     if testing:
         print(feed)
-        return 0
-    else:
-        return feed
+    return feed
 
 def get_wiki_data():
     wikipedia = "https://en.wikipedia.org/w/api.php?action=featuredfeed&feed=onthisday&feedformat=atom"
@@ -32,10 +29,11 @@ def get_wiki_data():
     return root[-2][-2].text
 
 def process_text( unicode_data ):
-    wiki_data = strip_tags(unicode_data)
-
-    wiki_list = wiki_data.splitlines()
-    event_list = list(filter_by_year(wiki_list))
+    data = strip_tags(unicode_data)
+    data_list = data.splitlines()
+    event_list = list(filter_by_year(data_list))
+    event_list = [" In " + s for s in event_list]
+    event_list = filter_to_read_words(event_list)
     return event_list
 
 class MyHTMLParser(HTMLParser):
@@ -56,6 +54,13 @@ def filter_by_year(seq):
     for line in seq:
         if line and line[0].isdigit(): yield line
 
+def filter_to_read_words(event_list):
+#TODO Implement
+    return event_list
+    replace_words = ['(pictured)']
+    for event in event_list:
+        print(([word for word in event.split() if word.lower() not in replace_words]))
+
 def build_json(on_this_day):
     redirect_url_date, update_date = get_dates()
     return { "uid": "urn:uuid:1335c695-cfb8-4ebb-abbd-80da344efa6b",
@@ -71,6 +76,5 @@ def get_dates():
     update_date = datetime.datetime.now().isoformat()
     return [redirect_url_date, update_date]
 
-
-if testing:
-    lambda_handler("1","2")
+if True:
+    get_on_this_day()
