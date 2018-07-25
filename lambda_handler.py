@@ -1,4 +1,3 @@
-from __future__ import print_function
 from HTMLParser import HTMLParser
 import urllib2
 import json
