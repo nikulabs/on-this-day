@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import urllib2
 import json
 import time
+import urllib2
 
 testing = False
 
