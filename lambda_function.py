@@ -1,24 +1,29 @@
 # -*- coding: utf-8 -*-
 import json
 import time
-import urllib2
+import requests
 
 testing = False
+
 
 def lambda_handler(event, context):
     return get_on_this_day()
 
 def get_on_this_day():
-    wiki_data = get_wiki_data()
-    on_this_day = process_text( wiki_data )
-    feed = build_json( on_this_day )
+    wiki_data = get_wikipedia_day_data()
+    on_this_day = process_text(wiki_data)
+    feed = build_json(on_this_day)
     return feed
 
-def get_wiki_data():
+
+def get_wikipedia_day_data():
     extract_command = "format=json&action=query&prop=extracts&exintro=True&explaintext="
     wikipedia = "https://en.wikipedia.org/w/api.php?"+extract_command+"&titles="+get_url_title()
-    wiki_data = json.load(urllib2.urlopen(wikipedia))
-    return wiki_data["query"]["pages"].values()[0]["extract"]
+    wiki_data = requests.get(wikipedia).json()
+    for key, data in wiki_data["query"]["pages"].items():
+        print(json.dumps(data["extract"], indent=2))
+        return data["extract"]
+
 
 def process_text( unicode_data ):
     data_list = unicode_data.splitlines()
