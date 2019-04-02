@@ -21,7 +21,6 @@ def get_wikipedia_day_data():
     wikipedia = "https://en.wikipedia.org/w/api.php?"+extract_command+"&titles="+get_url_title()
     wiki_data = requests.get(wikipedia).json()
     for key, data in wiki_data["query"]["pages"].items():
-        print(json.dumps(data["extract"], indent=2))
         return data["extract"]
 
 
