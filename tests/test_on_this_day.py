@@ -62,6 +62,12 @@ class TestWikipediaOnThisDay(unittest.TestCase):
         expected_result = ["first event.", "last event."]
         self.assertListEqual(expected_result, actual_result)
 
+    def test_remove_people_dates_from_empty_list(self):
+        test_input = []
+        actual_result = aut.remove_people_dates(test_input)
+        expected_result = []
+        self.assertListEqual(expected_result, actual_result)
+
 
 
 if __name__ == '__main__':
