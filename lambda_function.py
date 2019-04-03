@@ -80,7 +80,7 @@ def get_url_title(request_time: RequestDate) -> str:
     return "Wikipedia:Selected_anniversaries/"+request_time.get_url_format()
 
 
-def lambda_handler(event, context) -> str:
+def lambda_handler(event, context) -> dict:
     return get_on_this_day()
 
 
