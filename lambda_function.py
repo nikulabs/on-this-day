@@ -14,10 +14,6 @@ class RequestDate:
         return time.strftime('%Y-%m-%dT', self.utc_time)+"00:00:00.0Z"
 
 
-def lambda_handler(event, context) -> str:
-    return get_on_this_day()
-
-
 def get_on_this_day(requested_day=RequestDate()) -> dict:
     wiki_data = get_wikipedia_day_data(requested_day)
     on_this_day = process_text(wiki_data)
@@ -84,5 +80,13 @@ def get_url_title(request_time) -> str:
     return "Wikipedia:Selected_anniversaries/"+request_time.get_url_format()
 
 
+def lambda_handler(event, context) -> str:
+    return get_on_this_day()
+
+
 if __name__ == '__main__':
     print("Called with main")
+
+
+
+
