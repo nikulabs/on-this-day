@@ -57,8 +57,8 @@ class TestWikipediaOnThisDay(unittest.TestCase):
         self.assertEqual(expected_response, actual_response)
 
     def test_remove_people_dates(self):
-        input = ["first event.", "last event.Name1 (d. 1154) \u00b7  Name Two (b. 1926)"]
-        actual_result = aut.remove_people_dates(input)
+        test_input = ["first event.", "last event.Name1 (d. 1154) \u00b7  Name Two (b. 1926)"]
+        actual_result = aut.remove_people_dates(test_input)
         expected_result = ["first event.", "last event."]
         self.assertListEqual(expected_result, actual_result)
 
