@@ -43,6 +43,10 @@ def get_wikipedia_day_data(requested_day):
 
 
 def process_text(unicode_data):
+    def filter_to_events(line):
+        if line and line[0].isdigit():
+            return True
+
     data_list = unicode_data.splitlines()
     event_list = filter(filter_to_events, data_list)
 
@@ -51,11 +55,6 @@ def process_text(unicode_data):
 
     event_list = [" In " + s for s in event_list]
     return event_list
-
-
-def filter_to_events(line):
-    if line and line[0].isdigit():
-        return True
 
 
 def remove_people_dates(event_list):
