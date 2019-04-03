@@ -84,4 +84,5 @@ def get_url_title(request_time) -> str:
     return "Wikipedia:Selected_anniversaries/"+request_time.get_url_format()
 
 
-print(get_on_this_day())
+if __name__ == '__main__':
+    print("Called with main")
