@@ -7,25 +7,25 @@ class RequestDate:
     def __init__(self, request_time=time):
         self.time = request_time
 
-    def get_url_format(self):
+    def get_url_format(self) -> str:
         return self.time.strftime("%B_")+time.strftime("%d").lstrip("0")
 
-    def get_update_format(self):
+    def get_update_format(self) -> str:
         return self.time.strftime('%Y-%m-%dT')+"00:00:00.0Z"
 
 
-def lambda_handler(event, context):
+def lambda_handler(event, context) -> str:
     return get_on_this_day()
 
 
-def get_on_this_day(requested_day=RequestDate()):
+def get_on_this_day(requested_day=RequestDate()) -> dict:
     wiki_data = get_wikipedia_day_data(requested_day)
     on_this_day = process_text(wiki_data)
     feed = build_json(on_this_day, requested_day)
     return feed
 
 
-def get_wikipedia_day_data(requested_day):
+def get_wikipedia_day_data(requested_day) -> str:
     query_component = {
         "format": "json",
         "action": "query",
@@ -42,7 +42,7 @@ def get_wikipedia_day_data(requested_day):
     return extracted[0]
 
 
-def process_text(unicode_data):
+def process_text(unicode_data) -> list:
     def filter_to_events(line):
         if line and line[0].isdigit():
             return True
@@ -57,7 +57,7 @@ def process_text(unicode_data):
     return event_list
 
 
-def remove_people_dates(event_list):
+def remove_people_dates(event_list) -> list:
     last_event = event_list[-1]
     index_of_separator = last_event.index(u'·')
     index_of_open_paren = last_event[:index_of_separator].index('(')
@@ -66,13 +66,13 @@ def remove_people_dates(event_list):
     return event_list
 
 
-def filter_to_read_words(event_list):
+def filter_to_read_words(event_list) -> list:
     # TODO: Implement
     replace_words = ['(pictured)']
     return event_list
 
 
-def build_json(on_this_day, requested_day):
+def build_json(on_this_day, requested_day) -> dict:
     return {"uid": "urn:uuid:1335c695-cfb8-4ebb-abbd-80da344efa6b",
             "updateDate": requested_day.get_update_format(),
             "titleText": "On This Day, "+time.strftime("%B %d"),
@@ -80,7 +80,7 @@ def build_json(on_this_day, requested_day):
             "redirectionUrl": "https://en.wikipedia.org/wiki/"+get_url_title(requested_day)}
 
 
-def get_url_title(request_time):
+def get_url_title(request_time) -> str:
     return "Wikipedia:Selected_anniversaries/"+request_time.get_url_format()
 
 
