@@ -29,7 +29,7 @@ def get_wikipedia_day_data(requested_day: RequestDate) -> str:
         "prop": "extracts",
         "exintro": "True",
         "explaintext": "",
-        "titles": get_url_title(requested_day)
+        "titles": requested_day.get_url_format()
     }
 
     wiki_data = requests.get("https://en.wikipedia.org/w/api.php", query_component).json()
