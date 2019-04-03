@@ -18,7 +18,7 @@ def lambda_handler(event, context):
     return get_on_this_day()
 
 
-def get_on_this_day(requested_day):
+def get_on_this_day(requested_day=RequestDate(time)):
     wiki_data = get_wikipedia_day_data(requested_day)
     on_this_day = process_text(wiki_data)
     feed = build_json(on_this_day, requested_day)
@@ -84,4 +84,4 @@ def get_url_title(request_time):
     return "Wikipedia:Selected_anniversaries/"+request_time.get_url_format()
 
 
-print(get_on_this_day(RequestDate(time)))
+print(get_on_this_day())
