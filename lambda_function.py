@@ -29,7 +29,7 @@ def get_wikipedia_day_data(requested_day: RequestDate) -> str:
         "prop": "extracts",
         "exintro": "True",
         "explaintext": "",
-        "titles": requested_day.get_url_format()
+        "titles": f"Wikipedia:Selected_anniversaries/{requested_day.get_url_format()}"
     }
 
     wiki_data = requests.get("https://en.wikipedia.org/w/api.php", query_component).json()
@@ -86,4 +86,4 @@ def lambda_handler(event, context) -> dict:
 
 
 if __name__ == '__main__':
-    print("Called with main")
+    print(get_on_this_day())
