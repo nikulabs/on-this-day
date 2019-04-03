@@ -4,14 +4,14 @@ import requests
 
 
 class RequestDate:
-    def __init__(self, request_time=time):
-        self.time = request_time
+    def __init__(self, request_time_in_seconds=time.time()):
+        self.utc_time = time.gmtime(request_time_in_seconds)
 
     def get_url_format(self) -> str:
-        return self.time.strftime("%B_")+time.strftime("%d").lstrip("0")
+        return time.strftime("%B_", self.utc_time) + time.strftime("%d", self.utc_time).lstrip("0")
 
     def get_update_format(self) -> str:
-        return self.time.strftime('%Y-%m-%dT')+"00:00:00.0Z"
+        return time.strftime('%Y-%m-%dT', self.utc_time)+"00:00:00.0Z"
 
 
 def lambda_handler(event, context) -> str:
