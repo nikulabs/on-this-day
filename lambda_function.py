@@ -55,12 +55,14 @@ def process_text(unicode_data: str) -> list:
 
 
 def remove_people_dates(event_list: list) -> list:
-    if event_list:
+    try:
         last_event = event_list[-1]
         index_of_separator = last_event.index(u'·')
         index_of_open_paren = last_event[:index_of_separator].index('(')
         index_of_event_end = last_event[:index_of_open_paren].index('.')
         event_list[-1] = last_event[:index_of_event_end+1]
+    except (ValueError, IndexError):
+        pass
     return event_list
 
 
