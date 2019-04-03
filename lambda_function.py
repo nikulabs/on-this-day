@@ -8,7 +8,8 @@ class RequestDate:
         self.utc_time = time.gmtime(request_time)
 
     def get_url_format(self) -> str:
-        return time.strftime("%B_%d", self.utc_time).lstrip("0")
+        # TODO: Windows specific? '#' vs '-' in format
+        return time.strftime("%B_%#d", self.utc_time)
 
     def get_update_format(self) -> str:
         return time.strftime('%Y-%m-%dT', self.utc_time)+"00:00:00.0Z"
