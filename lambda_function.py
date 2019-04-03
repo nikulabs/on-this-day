@@ -2,7 +2,16 @@
 import time
 import requests
 
-testing = False
+
+class RequestDate:
+    def __init__(self, request_time):
+        self.time = request_time
+
+    def get_url_format(self):
+        return self.time.strftime("%B_")+time.strftime("%d").lstrip("0")
+
+    def get_update_format(self):
+        return self.time.strftime('%Y-%m-%dT')+"00:00:00.0Z"
 
 
 def lambda_handler(event, context):
@@ -74,6 +83,4 @@ def get_url_title():
 def get_url_date():
     return time.strftime("%B_")+time.strftime("%d").lstrip("0")
 
-
-if testing:
-    print(get_on_this_day())
+print(get_on_this_day(RequestDate(time)))
