@@ -4,7 +4,7 @@ import requests
 
 
 class RequestDate:
-    def __init__(self, request_time):
+    def __init__(self, request_time=time):
         self.time = request_time
 
     def get_url_format(self):
@@ -18,7 +18,7 @@ def lambda_handler(event, context):
     return get_on_this_day()
 
 
-def get_on_this_day(requested_day=RequestDate(time)):
+def get_on_this_day(requested_day=RequestDate()):
     wiki_data = get_wikipedia_day_data(requested_day)
     on_this_day = process_text(wiki_data)
     feed = build_json(on_this_day, requested_day)
