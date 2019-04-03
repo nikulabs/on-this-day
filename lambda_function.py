@@ -20,15 +20,23 @@ def lambda_handler(event, context):
 
 def get_on_this_day(requested_day):
     wiki_data = get_wikipedia_day_data(requested_day)
+    print(wiki_data)
     on_this_day = process_text(wiki_data)
     feed = build_json(on_this_day, requested_day)
     return feed
 
 
 def get_wikipedia_day_data(requested_day):
-    query_component = "format=json&action=query&prop=extracts&exintro=True&explaintext=&titles="+get_url_title(requested_day)
-    wikipedia_url = "https://en.wikipedia.org/w/api.php?"+query_component
-    wiki_data = requests.get(wikipedia_url).json()
+    query_component = {
+        "format": "json",
+        "action": "query",
+        "prop": "extracts",
+        "exintro": "True",
+        "explaintext": "",
+        "titles": get_url_title(requested_day)
+    }
+
+    wiki_data = requests.get("https://en.wikipedia.org/w/api.php", query_component).json()
     extracted = []
     for key, data in wiki_data["query"]["pages"].items():
         extracted.append(data["extract"])
@@ -68,14 +76,10 @@ def filter_to_read_words(event_list):
 
 def build_json(on_this_day, requested_day):
     return {"uid": "urn:uuid:1335c695-cfb8-4ebb-abbd-80da344efa6b",
-            "updateDate": get_update_date(),
+            "updateDate": requested_day.get_update_format(),
             "titleText": "On This Day, "+time.strftime("%B %d"),
             "mainText": "".join(on_this_day),
             "redirectionUrl": "https://en.wikipedia.org/wiki/"+get_url_title(requested_day)}
-
-
-def get_update_date():
-    return time.strftime('%Y-%m-%dT')+"00:00:00.0Z"
 
 
 def get_url_title(request_time):
