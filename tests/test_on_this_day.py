@@ -74,6 +74,12 @@ class TestWikipediaOnThisDay(unittest.TestCase):
         expected_result = ["first event.", "last event."]
         self.assertListEqual(expected_result, actual_result)
 
+    def test_filter_to_year_events(self):
+        test_input = ["1559 Event 1", "Non-year event", "1900 Event 2"]
+        actual_result = aut.filter_to_year_events(test_input)
+        expected_result = ["1559 Event 1", "1900 Event 2"]
+        self.assertListEqual(expected_result, actual_result)
+
 
 
 if __name__ == '__main__':
