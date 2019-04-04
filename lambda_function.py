@@ -91,4 +91,5 @@ def lambda_handler(event, context) -> dict:
 
 
 if __name__ == '__main__':
-    print(get_on_this_day())
+    import json
+    print(json.dumps(get_on_this_day(), indent=2))
