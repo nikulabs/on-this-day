@@ -42,34 +42,36 @@ def get_wikipedia_day_data(requested_day: RequestDate) -> str:
 def process_text(unicode_data: str) -> list:
     data_list = unicode_data.splitlines()
 
-    event_list = filter_to_year_events(data_list)
-    event_list = remove_people_dates(event_list)
-    event_list = filter_to_read_words(event_list)
+    event_list = filter(is_event, data_list)
+    event_list = map(remove_people_dates, event_list)
+    event_list = map(remove_paren_word, event_list)
 
     event_list = [" In " + s for s in event_list]
     return event_list
 
 
-def filter_to_year_events(events_list: list) -> list:
-    return [event for event in events_list if event and event[0].isdigit()]
+def is_event(line: str) -> bool:
+    if line and line[0].isdigit():
+        return True
+    return False
 
 
-def remove_people_dates(event_list: list) -> list:
+def remove_people_dates(line: str) -> str:
     try:
-        last_event = event_list[-1]
-        index_of_separator = last_event.index(u'·')
-        index_of_open_paren = last_event[:index_of_separator].index('(')
-        index_of_event_end = last_event[:index_of_open_paren].index('.')
-        event_list[-1] = last_event[:index_of_event_end+1]
+        index_of_separator = line.index(u'·')
+        index_of_open_paren = line[:index_of_separator].index('(')
+        index_of_event_end = line[:index_of_open_paren].index('.')
+        line = line[:index_of_event_end+1]
     except (ValueError, IndexError):
         pass
-    return event_list
+    return line
 
 
-def filter_to_read_words(event_list: list) -> list:
-    # TODO: Implement
-    replace_words = ['(pictured)']
-    return event_list
+def remove_paren_word(line: str) -> str:
+    import re
+    removed = re.sub(r'\(.*?\)', '', line)
+    condensed = ' '.join(removed.split())
+    return condensed
 
 
 def build_json(on_this_day: list, requested_day: RequestDate) -> dict:

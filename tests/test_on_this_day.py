@@ -57,10 +57,10 @@ class TestWikipediaOnThisDay(unittest.TestCase):
         self.assertEqual(expected_response, actual_response)
 
     def test_remove_people_dates(self):
-        test_input = ["first event.", "last event.Name1 (d. 1154) \u00b7  Name Two (b. 1926)"]
+        test_input = "last event.Name1 (d. 1154) \u00b7  Name Two (b. 1926)"
         actual_result = aut.remove_people_dates(test_input)
-        expected_result = ["first event.", "last event."]
-        self.assertListEqual(expected_result, actual_result)
+        expected_result = "last event."
+        self.assertEqual(expected_result, actual_result)
 
     def test_remove_people_dates_from_empty_list(self):
         test_input = []
@@ -74,12 +74,29 @@ class TestWikipediaOnThisDay(unittest.TestCase):
         expected_result = ["first event.", "last event."]
         self.assertListEqual(expected_result, actual_result)
 
-    def test_filter_to_year_events(self):
-        test_input = ["1559 Event 1", "Non-year event", "1900 Event 2"]
-        actual_result = aut.filter_to_year_events(test_input)
-        expected_result = ["1559 Event 1", "1900 Event 2"]
-        self.assertListEqual(expected_result, actual_result)
+    def test_is_event_true(self):
+        test_input = "1559 Event 1"
+        actual_result = aut.is_event(test_input)
+        expected_result = True
+        self.assertEqual(expected_result, actual_result)
 
+    def test_is_event_false(self):
+        test_input = "Not an event"
+        actual_result = aut.is_event(test_input)
+        expected_result = False
+        self.assertEqual(expected_result, actual_result)
+
+    def test_remove_paren_word_single(self):
+        test_input = "this is a (pictured) string"
+        actual_result = aut.remove_paren_word(test_input)
+        expected_result = "this is a string"
+        self.assertEqual(expected_result, actual_result)
+
+    def test_remove_paren_word_multiple(self):
+        test_input = "(remove) this is a (pictured) string (remove)"
+        actual_result = aut.remove_paren_word(test_input)
+        expected_result = "this is a string"
+        self.assertEqual(expected_result, actual_result)
 
 
 if __name__ == '__main__':
