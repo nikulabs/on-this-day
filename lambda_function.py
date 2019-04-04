@@ -74,16 +74,14 @@ def remove_paren_word(line: str) -> str:
     return condensed
 
 
-def build_json(on_this_day: list, requested_day: RequestDate) -> dict:
-    return {"uid": "urn:uuid:1335c695-cfb8-4ebb-abbd-80da344efa6b",
-            "updateDate": requested_day.get_update_format(),
-            "titleText": "On This Day, "+time.strftime("%B %d"),
-            "mainText": "".join(on_this_day),
-            "redirectionUrl": "https://en.wikipedia.org/wiki/"+get_url_title(requested_day)}
-
-
-def get_url_title(request_time: RequestDate) -> str:
-    return "Wikipedia:Selected_anniversaries/"+request_time.get_url_format()
+def build_json(on_this_day: list, day: RequestDate) -> dict:
+    return {
+        "uid": "urn:uuid:1335c695-cfb8-4ebb-abbd-80da344efa6b",
+        "updateDate": day.get_update_format(),
+        "titleText": "On This Day, "+time.strftime("%B %d"),
+        "mainText": "".join(on_this_day),
+        "redirectionUrl": "https://en.wikipedia.org/wiki/Wikipedia:Selected_anniversaries/"+day.get_url_format()
+    }
 
 
 def lambda_handler(event, context) -> dict:
