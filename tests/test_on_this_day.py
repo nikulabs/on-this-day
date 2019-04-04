@@ -86,6 +86,12 @@ class TestWikipediaOnThisDay(unittest.TestCase):
         expected_result = False
         self.assertEqual(expected_result, actual_result)
 
+    def test_is_event_empty(self):
+        test_input = ""
+        actual_result = aut.is_event(test_input)
+        expected_result = False
+        self.assertEqual(expected_result, actual_result)
+
     def test_remove_paren_word_single(self):
         test_input = "this is a (pictured) string"
         actual_result = aut.remove_paren_word(test_input)
